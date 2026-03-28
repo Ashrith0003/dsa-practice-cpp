@@ -1,0 +1,58 @@
+
+#include<iostream>
+#include<stack>
+using namespace std;
+#define max 10
+int visited[max] = {0};
+class Graph{
+    int adj[max][max];
+    int v;
+public:
+    Graph(int size){
+        v = size;
+        for(int i=0;i<size;i++){
+            for(int j=0;j<size;j++){
+                adj[i][j] = 0;
+            }
+        }
+    }
+
+    void addEdge(int u,int w){  // directed//
+        adj[u][w]=1;
+    }
+
+    void DFS(int s){
+        int stack[max];
+        int top =-1;
+
+        stack[++top] = s;
+        visited[s]= true;
+
+        while(top !=-1){
+            int node = stack[top--];
+            cout<<node<<" ";
+
+            for(int i=0;i<v;i++){
+                if(adj[node][i]==1 && visited[i]==0){
+                    visited[i];
+                    stack[++top] = i;
+                }
+            }
+        }
+
+        cout << endl; 
+    }
+};
+
+int main(){
+    Graph g(5);
+    g.addEdge(0, 1);
+    g.addEdge(0, 2);
+    g.addEdge(1, 3);
+    g.addEdge(2, 4);
+    g.addEdge(3, 4);
+
+    g.DFS(0);
+    return 0;
+
+}
