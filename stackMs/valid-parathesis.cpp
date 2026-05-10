@@ -1,79 +1,87 @@
 #include<iostream>
 using namespace std;
-# define max 100
-struct stack{
-    char arr[max];
+#define MAX 20
+
+class stack {
+    char arr[MAX];
     int top;
 
-    stack(){
+public:                           
+    stack() {
         top = -1;
     }
 
-bool isEmpty(){
-    return (top == -1);
-}
-
-bool isFull(){
-    return (top == max -1);
-}
-
-void push(int value){
-    if(isFull()){
-        cout<<"the stack is full "<<endl;
-    }else{
-        arr[++top] = value;
+    bool isFull() {
+        return top == MAX - 1;
     }
-}
 
-void pop(){
-    if(isEmpty()){
-        cout<<"the stack is empty"<<endl;
-    }else{
-       cout<<"popped :"<< arr[top--]<<endl;
+    bool isEmpty() {
+        return top == -1;
     }
-}
 
-char peek(){
-    if(isEmpty()){
-        cout<<"the stack is empty"<<endl;
-        return '\0';
-    }else{
-        return arr[top];
-    } 
-}
-
-bool checker(){
-    for(int i=0;i<arr.length();i++){
-        char c = arr[i];
-
-        if(c == '('||c == '{'||c == '['){
-            push(c);
-        }else if(c == ')'||c == '}'||c == ']'){
-            if(isEmpty()){
-                return false;
-            }else{
-                pop();
-            } 
+    void push(char value) {
+        if(isFull()) {
+            cout << "The stack is full" << endl;
+        } else {
+            arr[++top] = value;
+            cout << "Pushed: " << arr[top] << endl;  
         }
-        char top = peek;
-        if(c == ')' && st.top() == '(')return false;
-        if(c == ']' && st.top() == '[')return false;
-        if(c == '}' && st.top() == '{')return false; 
-        pop();
     }
-}
 
-};
+    void pop() {
+        if(isEmpty()) {
+            cout << "Stack is empty" << endl;
+        } else {
+            cout << "Popped: " << arr[top--] << endl;
+        }
+    }
 
-int main(){
+    char peek() {                 
+        if(isEmpty()) {
+            cout << "Stack is empty" << endl;
+            return '\0';           
+        } else {
+            return arr[top];
+        }
+    }
+
+    bool checker(string str) {
+        stack st;                  
+
+        for(int i = 0; i < str.length(); i++) {  
+            char c = str[i];
+
+            if(c == '{' || c == '[' || c == '(') {
+                st.push(c);       
+
+            } else if(c == '}' || c == ']' || c == ')') {
+
+                if(st.isEmpty()) return false;  
+
+                char chartop = st.peek();       
+
+                if(c == ')' && chartop != '(') return false;  
+                if(c == ']' && chartop != '[') return false;
+                if(c == '}' && chartop != '{') return false;
+
+                st.pop();         
+            }
+        }
+        return st.isEmpty();       
+    }
+};  
+
+int main() {
     stack s;
-    s.push(10);
-    s.push(20);
-    s.push(30);
-    s.push(40);
-    while(!s.isEmpty()){
-        cout<<" "<<s.peek()<<endl;
-        s.pop();
+    string input;
+
+    cout << "Enter bracket string: ";
+    cin >> input;
+
+    if(s.checker(input)) {
+        cout << "Valid brackets " << endl;
+    } else {
+        cout << "Invalid brackets " << endl;
     }
 
     return 0;
